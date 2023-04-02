@@ -1,4 +1,7 @@
+import { Router } from 'express';
 import { Configuration, OpenAIApi } from 'openai';
+
+export const router: Router = Router();
 
 if (!process.env.OPENAI_API_KEY) {
   console.info('ERROR: Missing OPENAI_API_KEY environment variable.');
