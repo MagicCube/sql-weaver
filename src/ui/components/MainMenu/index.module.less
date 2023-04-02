@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0 0 0;
+
+  li {
+    display: flex;
+    margin: 2px 0;
+    padding: 0;
+    font-size: 22px;
+
+    &.spring {
+      flex-grow: 1;
+    }
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.33);
+  cursor: pointer;
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.033);
+  }
+
+  &.active {
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
