@@ -1,7 +1,7 @@
 {
   "name": "sql-weaver",
   "version": "1.0.0",
-  "description": "",
+  "description": "A text2ql demo powered by OpenAI's GPT.",
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development ts-node src/node-server/index.ts",
