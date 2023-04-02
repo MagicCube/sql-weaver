@@ -1,15 +1,14 @@
 import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
 import 'dotenv/config';
 import * as express from 'express';
 import { createServer } from 'vite';
 
+import { router as openaiRouter } from './routers/openai';
 import { router as sqliteRouter } from './routers/sqlite';
 
 const devMode = process.env.NODE_ENV === 'development';
 
 const app = express();
-app.use(cors());
 app.use(bodyParser.json());
 if (devMode) {
   setupViteDevServer();
@@ -17,6 +16,7 @@ if (devMode) {
   app.use(express.static('dist'));
 }
 app.use('/api/sqlite', sqliteRouter);
+app.use('/api/ai', openaiRouter);
 
 async function setupViteDevServer() {
   console.info('Running in DEV mode.');
