@@ -1,4 +1,5 @@
-import { Empty, TableColumnProps } from '@arco-design/web-react';
+import type { TableColumnProps } from '@arco-design/web-react';
+import { Empty } from '@arco-design/web-react';
 import { Table } from '@arco-design/web-react';
 import cn from 'classnames';
 
