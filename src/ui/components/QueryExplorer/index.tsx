@@ -1,6 +1,6 @@
 import Split from '@uiw/react-split';
 import cn from 'classnames';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -19,14 +19,24 @@ export interface QueryExplorerProps {
 
 export function QueryExplorer({ className }: QueryExplorerProps) {
   const splitRef = useRef(null);
+  const upRef = useRef<HTMLDivElement>(null);
+  const downRef = useRef<HTMLDivElement>(null);
   const [databaseName] = useState('northwind');
   const snapshot = useSnapshot(queryStore);
   const [editorHeight, setEditorHeight] = useState<number | undefined>(undefined);
+  const [tableHeight, setTableHeight] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (upRef.current && downRef.current && splitRef.current) {
+      setEditorHeight(upRef.current.clientHeight);
+      setTableHeight(downRef.current.clientHeight);
+    }
+  }, []);
   const handleResize = useCallback((preSize: number, nextSize: number) => {
     const wrapper = (splitRef.current as { warpper: HTMLElement } | null)?.warpper;
     if (wrapper) {
       const height = (wrapper.clientHeight * (100 - nextSize)) / 100;
       setEditorHeight(height);
+      setTableHeight(wrapper.clientHeight - height - 1);
     }
   }, []);
   return (
@@ -41,7 +51,7 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
       </aside>
       <main className={styles.main}>
         <Split mode="vertical" className={styles.verticalSplit} lineBar onDragging={handleResize}>
-          <div className={styles.up}>
+          <div ref={upRef} className={styles.up}>
             <QueryEditor
               value={snapshot.query}
               height={editorHeight}
@@ -49,8 +59,8 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
               onExecute={() => queryStore.executeQuery()}
             />
           </div>
-          <div className={styles.down}>
-            <QueryResultTable data={(snapshot.results || []) as unknown[]} />
+          <div ref={downRef} className={styles.down}>
+            <QueryResultTable data={(snapshot.results || []) as unknown[]} height={tableHeight} />
           </div>
         </Split>
       </main>
