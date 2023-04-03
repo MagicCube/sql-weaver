@@ -22,6 +22,7 @@ router.post('/ask', async (req, res) => {
   const completionReq: CreateChatCompletionRequest = {
     model: 'gpt-3.5-turbo',
     messages: req.body.messages,
+    temperature: 0,
   };
   if (req.query.stream === 'true') {
     const partialCompletionRes = await openai.createChatCompletion(
