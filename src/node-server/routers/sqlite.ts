@@ -2,9 +2,7 @@ import { Router } from 'express';
 import * as path from 'path';
 import { Database } from 'sqlite3';
 
-import { DataTableSchema } from '@/core/types';
-
-import { convertTableSchemaToDSL } from '../../core/utils/data-table-schema';
+import type { DataTableSchema } from '@/core/types';
 
 export const router: Router = Router();
 
@@ -40,4 +38,12 @@ router.get('/northwind/table/:tableName/schema', (req, res) => {
       }
     }
   );
+});
+
+router.post('/northwind/query', (req, res) => {
+  db.all(req.body.query as string, (error: Error | null, rows: JSON[]) => {
+    if (!error) {
+      res.send(rows);
+    }
+  });
 });
