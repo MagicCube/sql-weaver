@@ -1,8 +1,8 @@
-import { Button } from '@arco-design/web-react';
-import { IconPlayArrow } from '@arco-design/web-react/icon';
+import { Button, Tooltip } from '@arco-design/web-react';
+import { IconPlayArrow, IconRobot } from '@arco-design/web-react/icon';
 import Editor from '@dp/byte-editor-react';
 import cn from 'classnames';
-import type { CSSProperties } from 'react';
+import type { editor } from 'monaco-editor';
 import { useCallback, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -16,11 +16,13 @@ export interface QueryEditorProps {
   height?: number;
   onChange?: (value: string) => void;
   onExecute?: () => void;
+  onAssistantRequest?: () => void;
 }
 
-export function QueryEditor({ className, value, height, onChange, onExecute }: QueryEditorProps) {
+export function QueryEditor({ className, value, height, onChange, onExecute, onAssistantRequest }: QueryEditorProps) {
   const snapshot = useSnapshot(dataTableSchemaStore);
   const editorRef = useRef<{ formatter(): void }>(null);
+  const editorIns = useRef<editor.IStandaloneCodeEditor | null>(null);
   const handleSuggestTables = async () => {
     return snapshot.schemas.map((table) => {
       return {
@@ -31,6 +33,7 @@ export function QueryEditor({ className, value, height, onChange, onExecute }: Q
   };
   const handleExecute = useCallback(() => {
     editorRef.current?.formatter();
+    editorIns.current?.setPosition({ column: 0, lineNumber: 0 });
     onExecute?.();
   }, [onExecute]);
   return (
@@ -42,8 +45,13 @@ export function QueryEditor({ className, value, height, onChange, onExecute }: Q
               Execute
             </Button>
           </li>
-          <li className={styles.spring}></li>
-          <li>Help</li>
+          <li>
+            <Tooltip content="AI powered SQL assitant">
+              <Button type="outline" icon={<IconRobot />} onClick={onAssistantRequest}>
+                SQL Assistant
+              </Button>
+            </Tooltip>
+          </li>
         </menu>
       </header>
       <main className={styles.main}>
@@ -61,6 +69,10 @@ export function QueryEditor({ className, value, height, onChange, onExecute }: Q
           value={value}
           onChange={onChange}
           onSuggestTables={handleSuggestTables}
+          onEditorCreated={(ins) => {
+            // @ts-ignore
+            editorIns.current = ins;
+          }}
         />
       </main>
     </div>
