@@ -1,4 +1,4 @@
-# sql-weaver: AI powered SQL Studio
+# sql-mind: AI powered SQL Studio
 
 ## Installation
 

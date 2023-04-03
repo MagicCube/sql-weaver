@@ -1,5 +1,5 @@
 {
-  "name": "sql-weaver",
+  "name": "sql-mind",
   "version": "1.0.0",
   "description": "A text2ql demo powered by OpenAI's GPT.",
   "main": "index.js",
