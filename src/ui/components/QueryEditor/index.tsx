@@ -1,3 +1,5 @@
+import { Button } from '@arco-design/web-react';
+import { IconPlayArrow } from '@arco-design/web-react/icon';
 import Editor from '@dp/byte-editor-react';
 import cn from 'classnames';
 
@@ -11,12 +13,21 @@ export interface QueryEditorProps {
 
 export function QueryEditor({ className, value, onChange }: QueryEditorProps) {
   return (
-    <Editor
-      className={cn(styles.container, className)}
-      style={{ fontSize: 16 }}
-      language="sql"
-      onChange={onChange}
-      value={value}
-    />
+    <div className={cn(styles.container, className)}>
+      <header className={styles.header}>
+        <menu className={styles.toolbar}>
+          <li>
+            <Button type="primary" icon={<IconPlayArrow />} disabled={value.trim() === ''}>
+              Execute
+            </Button>
+          </li>
+          <li className={styles.spring}></li>
+          <li>Help</li>
+        </menu>
+      </header>
+      <main className={styles.main}>
+        <Editor style={{ fontSize: 16 }} language="hive" onChange={onChange} value={value} />
+      </main>
+    </div>
   );
 }

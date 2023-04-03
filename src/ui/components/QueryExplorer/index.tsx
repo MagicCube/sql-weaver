@@ -29,10 +29,9 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
         </div>
       </aside>
       <main className={styles.main}>
-        <header className={styles.header}></header>
         <Split mode="vertical" className={styles.verticalSplit} lineBar>
           <div className={styles.up}>
-            <QueryEditor value={snapshot.query} onChange={(value) => snapshot.setQuery(value)} />
+            <QueryEditor value={snapshot.query} onChange={(value) => queryStore.setQuery(value)} />
           </div>
           <div className={styles.down}></div>
         </Split>

@@ -1,5 +1,32 @@
 .container {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+.header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 56px;
+  padding: 0 16px;
+}
+
+.main {
+  flex-grow: 1;
+  min-height: 1px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.spring {
+  flex-grow: 1;
 }
