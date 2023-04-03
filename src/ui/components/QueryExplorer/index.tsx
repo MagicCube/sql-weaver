@@ -1,6 +1,7 @@
 import Split from '@uiw/react-split';
 import cn from 'classnames';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
 import { queryStore } from '@/ui/stores';
@@ -16,10 +17,19 @@ export interface QueryExplorerProps {
 }
 
 export function QueryExplorer({ className }: QueryExplorerProps) {
+  const splitRef = useRef(null);
   const [databaseName] = useState('northwind');
   const snapshot = useSnapshot(queryStore);
+  const [editorHeight, setEditorHeight] = useState<number | undefined>(undefined);
+  const handleResize = useCallback((preSize: number, nextSize: number) => {
+    const wrapper = (splitRef.current as { warpper: HTMLElement } | null)?.warpper;
+    if (wrapper) {
+      const height = (wrapper.clientHeight * (100 - nextSize)) / 100;
+      setEditorHeight(height);
+    }
+  }, []);
   return (
-    <Split className={cn(styles.container, className)} lineBar>
+    <Split ref={splitRef} className={cn(styles.container, className)} lineBar>
       <aside className={styles.left}>
         <div className={styles.databaseSelectorContainer}>
           <DatabaseSelector value={databaseName} />
@@ -29,9 +39,13 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
         </div>
       </aside>
       <main className={styles.main}>
-        <Split mode="vertical" className={styles.verticalSplit} lineBar>
+        <Split mode="vertical" className={styles.verticalSplit} lineBar onDragging={handleResize}>
           <div className={styles.up}>
-            <QueryEditor value={snapshot.query} onChange={(value) => queryStore.setQuery(value)} />
+            <QueryEditor
+              value={snapshot.query}
+              height={editorHeight}
+              onChange={(value) => queryStore.setQuery(value)}
+            />
           </div>
           <div className={styles.down}></div>
         </Split>

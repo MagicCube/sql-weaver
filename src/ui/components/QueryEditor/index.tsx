@@ -2,6 +2,7 @@ import { Button } from '@arco-design/web-react';
 import { IconPlayArrow } from '@arco-design/web-react/icon';
 import Editor from '@dp/byte-editor-react';
 import cn from 'classnames';
+import type { CSSProperties } from 'react';
 import { useCallback, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -12,10 +13,11 @@ import styles from './index.module.less';
 export interface QueryEditorProps {
   className?: string;
   value: string;
+  height?: number;
   onChange: (value: string) => void;
 }
 
-export function QueryEditor({ className, value, onChange }: QueryEditorProps) {
+export function QueryEditor({ className, value, height, onChange }: QueryEditorProps) {
   const snapshot = useSnapshot(dataTableSchemaStore);
   const editorRef = useRef<{ formatter(): void }>(null);
   const handleSuggestTables = async () => {
@@ -53,6 +55,7 @@ export function QueryEditor({ className, value, onChange }: QueryEditorProps) {
             logicalOperatorNewline: 'before',
             indentStyle: 'standard',
           }}
+          height={height ? height - 56 : undefined}
           value={value}
           onChange={onChange}
           onSuggestTables={handleSuggestTables}
