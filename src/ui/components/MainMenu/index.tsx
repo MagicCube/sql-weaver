@@ -26,14 +26,14 @@ export function MainMenu({ className }: MainMenuProps) {
         </Tooltip>
       </li>
       <li>
-        <Tooltip content="Query Weaver" position="right">
+        <Tooltip content="Query AI" position="right">
           <a className={cn(styles.active, styles.item)}>
             <TableOutlined />
           </a>
         </Tooltip>
       </li>
       <li>
-        <Tooltip content="Vision Weaver" position="right">
+        <Tooltip content="Vision AI" position="right">
           <a className={styles.item}>
             <PieChartOutlined />
           </a>
