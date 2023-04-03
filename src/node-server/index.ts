@@ -29,5 +29,5 @@ async function setupViteDevServer() {
 }
 
 app.listen(3000, () => {
-  console.log('Server is now running at port 3000.');
+  console.log('🖥️ SQLWeaver server is now running at port 3000.\n\n🚀Please visit http://localhost:3000');
 });
