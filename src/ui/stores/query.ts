@@ -1,5 +1,5 @@
 export class QueryStore {
-  query = '';
+  query = 'SELECT * FROM Customers';
 
   setQuery(query: string) {
     this.query = query;
