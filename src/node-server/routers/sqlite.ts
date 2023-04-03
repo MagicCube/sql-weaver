@@ -44,6 +44,9 @@ router.post('/northwind/query', (req, res) => {
   db.all(req.body.query as string, (error: Error | null, rows: JSON[]) => {
     if (!error) {
       res.send(rows);
+    } else {
+      res.status(500);
+      res.send(error.message);
     }
   });
 });
