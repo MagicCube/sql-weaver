@@ -1,4 +1,4 @@
-import type { TableColumnProps } from '@arco-design/web-react';
+import { Empty, TableColumnProps } from '@arco-design/web-react';
 import { Table } from '@arco-design/web-react';
 import cn from 'classnames';
 
@@ -19,17 +19,21 @@ export function QueryResultTable({ className, data, height }: QueryResultTablePr
     : [];
   return (
     <div className={cn(styles.container, className)}>
-      <Table
-        className={styles.table}
-        virtualized
-        scroll={{
-          y: height,
-        }}
-        columns={columns}
-        data={data}
-        pagination={false}
-        border
-      />
+      {data && data.length ? (
+        <Table
+          className={styles.table}
+          virtualized
+          scroll={{
+            y: height,
+          }}
+          columns={columns}
+          data={data}
+          pagination={false}
+          border
+        />
+      ) : (
+        <Empty style={{ paddingTop: 32 }} />
+      )}
     </div>
   );
 }
