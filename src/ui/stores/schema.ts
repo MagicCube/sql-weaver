@@ -7,6 +7,10 @@ export class DataTableSchemaStore {
     return this.schemas.find((schema) => schema.name === tableName) || null;
   }
 
+  getTableNames(): string[] {
+    return this.schemas.map((schema) => schema.name);
+  }
+
   async initialLoad() {
     const res = await fetch('/api/sqlite/northwind/table/all/names');
     const data = (await res.json()) as string[];
