@@ -3,8 +3,11 @@
 }
 
 .left {
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
   width: 275px;
+  height: 100%;
   min-width: 128px;
 }
 
@@ -12,6 +15,20 @@
   flex-shrink: 0;
   height: 56px;
   border-bottom: 1px solid var(--color-border);
+}
+
+.databaseSelectorContainer {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding-right: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.databaseSchemaTreeContainer {
+  flex-grow: 1;
+  min-height: 1px;
+  overflow-y: auto;
 }
 
 .main {
