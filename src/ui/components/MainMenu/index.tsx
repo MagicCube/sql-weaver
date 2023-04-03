@@ -19,21 +19,21 @@ export function MainMenu({ className }: MainMenuProps) {
   return (
     <menu className={cn(styles.container, className)}>
       <li>
-        <Tooltip content="主页" position="right">
+        <Tooltip content="Home" position="right">
           <a className={styles.item}>
             <HomeOutlined />
           </a>
         </Tooltip>
       </li>
       <li>
-        <Tooltip content="智能辅助查询" position="right">
+        <Tooltip content="Query Weaver" position="right">
           <a className={cn(styles.active, styles.item)}>
             <TableOutlined />
           </a>
         </Tooltip>
       </li>
       <li>
-        <Tooltip content="数据可视化" position="right">
+        <Tooltip content="Vision Weaver" position="right">
           <a className={styles.item}>
             <PieChartOutlined />
           </a>
@@ -41,14 +41,14 @@ export function MainMenu({ className }: MainMenuProps) {
       </li>
       <li className={styles.spring}></li>
       <li>
-        <Tooltip content="系统设置" position="right">
+        <Tooltip content="Settings" position="right">
           <a className={styles.item}>
             <SettingOutlined />
           </a>
         </Tooltip>
       </li>
       <li>
-        <Tooltip content="Indoc 帮助中心" position="right">
+        <Tooltip content="Indoc Help Center" position="right">
           <a className={styles.item}>
             <QuestionCircleOutlined />
           </a>
