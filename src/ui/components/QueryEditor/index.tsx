@@ -3,10 +3,11 @@ import { IconPlayArrow, IconRobot } from '@arco-design/web-react/icon';
 import Editor from '@dp/byte-editor-react';
 import cn from 'classnames';
 import type { editor } from 'monaco-editor';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
-import { dataTableSchemaStore } from '@/ui/stores';
+import { assistantStore, dataTableSchemaStore } from '@/ui/stores';
+import { AssistantState } from '@/ui/stores/assistant';
 
 import styles from './index.module.less';
 
@@ -20,11 +21,17 @@ export interface QueryEditorProps {
 }
 
 export function QueryEditor({ className, value, height, onChange, onExecute, onAssistantRequest }: QueryEditorProps) {
-  const snapshot = useSnapshot(dataTableSchemaStore);
+  const schemaSnapshot = useSnapshot(dataTableSchemaStore);
+  const assistantSnapshot = useSnapshot(assistantStore);
   const editorRef = useRef<{ formatter(): void }>(null);
   const editorIns = useRef<editor.IStandaloneCodeEditor | null>(null);
+  useEffect(() => {
+    if (assistantSnapshot.state === AssistantState.SQLGenerated) {
+      editorRef.current?.formatter();
+    }
+  }, [assistantSnapshot.state]);
   const handleSuggestTables = async () => {
-    return snapshot.schemas.map((table) => {
+    return schemaSnapshot.schemas.map((table) => {
       return {
         label: table.name,
         type: 4,

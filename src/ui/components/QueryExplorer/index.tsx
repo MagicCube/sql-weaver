@@ -5,7 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
-import { queryStore } from '@/ui/stores';
+import { assistantStore, queryStore } from '@/ui/stores';
+import { AssistantState } from '@/ui/stores/assistant';
 
 import { DatabaseSchemaTree } from '../DatabaseSchemaTree';
 import { DatabaseSelector } from '../DatabaseSelector';
@@ -25,7 +26,8 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
   const downRef = useRef<HTMLDivElement>(null);
   const [databaseName] = useState('northwind');
   const [sqlAssistantVisible, setSQLAssistantVisible] = useState(false);
-  const snapshot = useSnapshot(queryStore);
+  const querySnapshot = useSnapshot(queryStore);
+  const assistantSnapshot = useSnapshot(assistantStore);
   const [editorHeight, setEditorHeight] = useState<number | undefined>(undefined);
   const [tableHeight, setTableHeight] = useState<number | undefined>(undefined);
   const autoResize = useCallback(() => {
@@ -43,6 +45,7 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
     }
   }, []);
   const handleAssistantRequest = useCallback(() => {
+    assistantStore.state = AssistantState.Idle;
     setSQLAssistantVisible(true);
   }, []);
   useEffect(() => {
@@ -69,7 +72,7 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
           <Split mode="vertical" className={styles.verticalSplit} lineBar onDragging={handleResize}>
             <div ref={upRef} className={styles.up}>
               <QueryEditor
-                value={snapshot.query}
+                value={querySnapshot.query}
                 height={editorHeight}
                 onChange={(value) => queryStore.setQuery(value)}
                 onExecute={() => queryStore.executeQuery()}
@@ -77,13 +80,13 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
               />
             </div>
             <div ref={downRef} className={styles.down}>
-              {!snapshot.error ? (
-                <QueryResultTable data={(snapshot.results || []) as unknown[]} height={tableHeight} />
+              {!querySnapshot.error ? (
+                <QueryResultTable data={(querySnapshot.results || []) as unknown[]} height={tableHeight} />
               ) : (
                 <Result
                   status="error"
                   title="An error was occurred during querying"
-                  subTitle={snapshot.error.message || 'Unknown issue.'}
+                  subTitle={querySnapshot.error.message || 'Unknown issue.'}
                 />
               )}
             </div>
@@ -92,9 +95,14 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
       </Split>
       <Modal
         autoFocus
-        visible={sqlAssistantVisible}
+        visible={
+          sqlAssistantVisible &&
+          assistantSnapshot.state !== AssistantState.SQLGenerating &&
+          assistantSnapshot.state !== AssistantState.SQLGenerated
+        }
         title="SQL Assistant"
         footer={null}
+        style={{ width: 680 }}
         onCancel={() => {
           setSQLAssistantVisible(false);
         }}
