@@ -47,6 +47,12 @@ export function QueryEditor({ className, value, onChange }: QueryEditorProps) {
           ref={editorRef}
           style={{ fontSize: 16 }}
           language="hive"
+          format={{
+            keywordCase: 'upper',
+            denseOperators: true,
+            logicalOperatorNewline: 'before',
+            indentStyle: 'standard',
+          }}
           value={value}
           onChange={onChange}
           onSuggestTables={handleSuggestTables}
