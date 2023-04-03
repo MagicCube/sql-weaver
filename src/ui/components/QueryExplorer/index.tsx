@@ -7,7 +7,7 @@ import { queryStore } from '@/ui/stores';
 
 import { DatabaseSchemaTree } from '../DatabaseSchemaTree';
 import { DatabaseSelector } from '../DatabaseSelector';
-import { SQLEditor } from '../SQLEditor';
+import { QueryEditor } from '../QueryEditor';
 
 import styles from './index.module.less';
 
@@ -32,7 +32,7 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
         <header className={styles.header}></header>
         <Split mode="vertical" className={styles.verticalSplit} lineBar>
           <div className={styles.up}>
-            <SQLEditor value={snapshot.query} onChange={(value) => snapshot.setQuery(value)} />
+            <QueryEditor value={snapshot.query} onChange={(value) => snapshot.setQuery(value)} />
           </div>
           <div className={styles.down}></div>
         </Split>
