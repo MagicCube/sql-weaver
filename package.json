@@ -40,6 +40,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@arco-design/web-react": "^2.46.2",
+    "@dp/byte-editor-react": "^0.0.19",
     "@uiw/react-split": "^5.8.10",
     "body-parser": "^1.20.2",
     "classnames": "^2.3.2",
