@@ -14,10 +14,11 @@ export interface QueryEditorProps {
   className?: string;
   value: string;
   height?: number;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  onExecute?: () => void;
 }
 
-export function QueryEditor({ className, value, height, onChange }: QueryEditorProps) {
+export function QueryEditor({ className, value, height, onChange, onExecute }: QueryEditorProps) {
   const snapshot = useSnapshot(dataTableSchemaStore);
   const editorRef = useRef<{ formatter(): void }>(null);
   const handleSuggestTables = async () => {
@@ -30,7 +31,8 @@ export function QueryEditor({ className, value, height, onChange }: QueryEditorP
   };
   const handleExecute = useCallback(() => {
     editorRef.current?.formatter();
-  }, []);
+    onExecute?.();
+  }, [onExecute]);
   return (
     <div className={cn(styles.container, className)}>
       <header className={styles.header}>
