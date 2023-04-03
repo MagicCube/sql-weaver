@@ -9,6 +9,7 @@ import { queryStore } from '@/ui/stores';
 import { DatabaseSchemaTree } from '../DatabaseSchemaTree';
 import { DatabaseSelector } from '../DatabaseSelector';
 import { QueryEditor } from '../QueryEditor';
+import { QueryResultTable } from '../QueryResultTable';
 
 import styles from './index.module.less';
 
@@ -45,9 +46,12 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
               value={snapshot.query}
               height={editorHeight}
               onChange={(value) => queryStore.setQuery(value)}
+              onExecute={() => queryStore.executeQuery()}
             />
           </div>
-          <div className={styles.down}></div>
+          <div className={styles.down}>
+            <QueryResultTable data={(snapshot.results || []) as unknown[]} />
+          </div>
         </Split>
       </main>
     </Split>
