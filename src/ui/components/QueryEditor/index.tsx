@@ -2,6 +2,10 @@ import { Button } from '@arco-design/web-react';
 import { IconPlayArrow } from '@arco-design/web-react/icon';
 import Editor from '@dp/byte-editor-react';
 import cn from 'classnames';
+import { useCallback, useRef } from 'react';
+import { useSnapshot } from 'valtio';
+
+import { dataTableSchemaStore } from '@/ui/stores';
 
 import styles from './index.module.less';
 
@@ -12,12 +16,25 @@ export interface QueryEditorProps {
 }
 
 export function QueryEditor({ className, value, onChange }: QueryEditorProps) {
+  const snapshot = useSnapshot(dataTableSchemaStore);
+  const editorRef = useRef<{ formatter(): void }>(null);
+  const handleSuggestTables = async () => {
+    return snapshot.schemas.map((table) => {
+      return {
+        label: table.name,
+        type: 4,
+      };
+    });
+  };
+  const handleExecute = useCallback(() => {
+    editorRef.current?.formatter();
+  }, []);
   return (
     <div className={cn(styles.container, className)}>
       <header className={styles.header}>
         <menu className={styles.toolbar}>
           <li>
-            <Button type="primary" icon={<IconPlayArrow />} disabled={value.trim() === ''}>
+            <Button type="primary" icon={<IconPlayArrow />} disabled={value.trim() === ''} onClick={handleExecute}>
               Execute
             </Button>
           </li>
@@ -26,7 +43,14 @@ export function QueryEditor({ className, value, onChange }: QueryEditorProps) {
         </menu>
       </header>
       <main className={styles.main}>
-        <Editor style={{ fontSize: 16 }} language="hive" onChange={onChange} value={value} />
+        <Editor
+          ref={editorRef}
+          style={{ fontSize: 16 }}
+          language="hive"
+          value={value}
+          onChange={onChange}
+          onSuggestTables={handleSuggestTables}
+        />
       </main>
     </div>
   );
