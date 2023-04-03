@@ -1,9 +1,13 @@
 import Split from '@uiw/react-split';
 import cn from 'classnames';
 import { useState } from 'react';
+import { useSnapshot } from 'valtio';
+
+import { queryStore } from '@/ui/stores';
 
 import { DatabaseSchemaTree } from '../DatabaseSchemaTree';
 import { DatabaseSelector } from '../DatabaseSelector';
+import { SQLEditor } from '../SQLEditor';
 
 import styles from './index.module.less';
 
@@ -12,7 +16,8 @@ export interface QueryExplorerProps {
 }
 
 export function QueryExplorer({ className }: QueryExplorerProps) {
-  const [databaseName, setDatabaseName] = useState('northwind');
+  const [databaseName] = useState('northwind');
+  const snapshot = useSnapshot(queryStore);
   return (
     <Split className={cn(styles.container, className)} lineBar>
       <aside className={styles.left}>
@@ -26,7 +31,9 @@ export function QueryExplorer({ className }: QueryExplorerProps) {
       <main className={styles.main}>
         <header className={styles.header}></header>
         <Split mode="vertical" className={styles.verticalSplit} lineBar>
-          <div className={styles.up}></div>
+          <div className={styles.up}>
+            <SQLEditor value={snapshot.query} onChange={(value) => snapshot.setQuery(value)} />
+          </div>
           <div className={styles.down}></div>
         </Split>
       </main>
